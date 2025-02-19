@@ -1,0 +1,217 @@
+﻿LED
+
+void setup()
+{
+  pinMode(13, OUTPUT);
+}
+
+void loop()
+{
+  digitalWrite(13, HIGH);
+  delay(1000);
+  digitalWrite(13, LOW);
+  delay(1000);
+}
+------------------------------------
+Traffic 
+
+void setup()
+{
+  pinMode(10, OUTPUT);
+  pinMode(9, OUTPUT);
+  pinMode(8, OUTPUT);
+}
+
+void loop()
+{
+  digitalWrite(10, HIGH);
+  delay(2000);
+  digitalWrite(10, LOW);
+  delay(1000);
+
+  digitalWrite(9, HIGH);
+  delay(1000);
+  digitalWrite(9, LOW);
+  delay(1000);
+
+  digitalWrite(8, HIGH);
+  delay(2000);
+  digitalWrite(8, LOW);
+  delay(1000);
+}
+------------------------------------
+Ultrasonic
+
+const int trigPin = 7;
+const int echoPin = 8;
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(trigPin, OUTPUT);  // Now using trigPin
+  pinMode(echoPin, INPUT);
+}
+
+void loop() {
+  long duration, inches, cm;
+
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+
+  duration = pulseIn(echoPin, HIGH);
+
+  inches = microsecondsToInches(duration);
+  cm = microsecondsToCentimeters(duration);
+
+  Serial.print(inches);
+  Serial.print("in, ");
+  Serial.print(cm);
+  Serial.print("cm");
+  Serial.println();
+
+  delay(100);
+}
+
+long microsecondsToInches(long microseconds) {
+  return microseconds / 74 / 2;
+}
+
+long microsecondsToCentimeters(long microseconds) {
+  return microseconds / 29 / 2;
+}
+------------------------------------
+Buzzer
+
+#define BUZZER 18
+
+void setup() {
+  pinMode(BUZZER, OUTPUT);
+}
+
+void loop() {
+  tone(BUZZER, 85);
+  delay(1000);
+  noTone(BUZZER);
+  delay(1000);
+}
+------------------------------------
+Buzzer Melody
+
+#define NOTE_C4 262
+#define NOTE_G3 196
+#define NOTE_A3 220
+#define NOTE_B3 247
+#define NOTE_C4 262
+
+int melody[] = {
+  NOTE_C4, NOTE_G3, NOTE_G3, NOTE_A3, NOTE_G3, 0, NOTE_B3, NOTE_C4
+};
+
+int noteDurations[] = {
+  4, 8, 8, 4, 4, 4, 4, 4
+};
+
+void setup() {
+  for (int thisNote = 0; thisNote < 8; thisNote++) {
+    int noteDuration = 1000 / noteDurations[thisNote];
+    tone(8, melody[thisNote], noteDuration);
+    int pauseBetweenNotes = noteDuration * 1.30;
+    noTone(8);
+  }
+}
+
+void loop() {
+}
+------------------------------------
+RGB 
+
+int redpin = 11; //select the pin for the red LED
+int bluepin =10; // select the pin for the blue LED
+int greenpin = 9;// select the pin for the green LED
+int val;
+void setup() {
+pinMode(redpin, OUTPUT);
+pinMode(bluepin, OUTPUT);
+pinMode(greenpin, OUTPUT);
+Serial.begin(9600);
+}
+void loop()
+{
+for(val = 255; val > 0; val--)
+{
+analogWrite(redpin, val); //set PWM value for red
+analogWrite(bluepin, 255 - val); //set PWM value for blue
+analogWrite(greenpin, 128 - val); //set PWM value for green
+Serial.println(val); //print current value
+delay(1);
+}
+for(val = 0; val < 255; val++)
+{
+analogWrite(redpin, val);
+analogWrite(bluepin, 255 - val);
+analogWrite(greenpin, 128 - val);
+Serial.println(val);
+delay(1);
+}
+}
+------------------------------------
+Humidity
+#include <dht.h>
+#define DHT11_PIN 7
+dht DHT;
+
+void setup(){
+Serial.begin(9600);
+}
+
+void loop(){
+DHT.read11(DHT11_PIN);
+Serial.print("Temperature = "); 
+Serial.println(DHT.temperature);
+Serial.print("Humidity = ");
+Serial.println(DHT.humidity);
+delay(1000);
+}
+-----------------------------------
+LCD
+
+#include <LiquidCrystal.h>
+const int rs = 12, en = 11, d4 = 5, d5 = 4, d6 = 3, d7 = 2;
+LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
+
+void setup() {
+  lcd.begin(16, 2);
+}
+
+void loop() {
+  lcd.setCursor(0, 0);
+  lcd.print("Hello");
+  delay(3000);
+  lcd.setCursor(0, 1);
+  lcd.print("Good Morning");
+}
+------------------------------------
+7 segment
+
+void setup() {
+  pinMode(2, OUTPUT);
+  pinMode(3, OUTPUT);
+  pinMode(4, OUTPUT);
+  pinMode(5, OUTPUT);
+  pinMode(6, OUTPUT);
+  pinMode(7, OUTPUT);
+  pinMode(8, OUTPUT);
+}
+
+void loop() {
+  digitalWrite(2, HIGH);
+  digitalWrite(3, HIGH);
+  digitalWrite(4, HIGH);
+  digitalWrite(5, HIGH);
+  digitalWrite(6, HIGH);
+  digitalWrite(7, HIGH);
+  digitalWrite(8, LOW);
+}
+---------------------------
