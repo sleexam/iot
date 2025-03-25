@@ -1,4 +1,4 @@
-﻿LED
+1 ) Interfacing LED with Arduino
 
 void setup()
 {
@@ -12,8 +12,11 @@ void loop()
   digitalWrite(13, LOW);
   delay(1000);
 }
-------------------------------------
-Traffic 
+
+    • LED (13) → Arduino (13)
+    • GND → Arduino GND
+_________________________________________________________________________
+2) Traffic light with LED interfacing using Arduino UNO
 
 void setup()
 {
@@ -28,49 +31,71 @@ void loop()
   delay(2000);
   digitalWrite(10, LOW);
   delay(1000);
-
   digitalWrite(9, HIGH);
   delay(1000);
   digitalWrite(9, LOW);
   delay(1000);
-
   digitalWrite(8, HIGH);
   delay(2000);
   digitalWrite(8, LOW);
   delay(1000);
 }
-------------------------------------
-Ultrasonic
 
-const int trigPin = 7;
+    • Red LED → Arduino (10)
+    • Yellow LED → Arduino (9)
+    • Green LED → Arduino (8)
+    • GND → Arduino GND
+_________________________________________________________________________
+3) LED with pushbutton using Arduino UNO
+
+const int buttonPin = 2;
+const int ledPin = 13;
+int buttonState = 0;
+
+void setup() {
+  pinMode(ledPin, OUTPUT);
+  pinMode(buttonPin, INPUT);
+}
+
+void loop() {
+  buttonState = digitalRead(buttonPin);
+  if (buttonState == HIGH) {
+    digitalWrite(ledPin, HIGH);
+  } else {
+    digitalWrite(ledPin, LOW);
+  }
+}
+
+    • LED (13) → Arduino (13)
+    • Button → Arduino (2)
+    • GND → Arduino GND
+_________________________________________________________________________
+4) Interfacing Ultrasonic Sensor With Arduino
+
+const int pingPin = 7;
 const int echoPin = 8;
 
 void setup() {
   Serial.begin(9600);
-  pinMode(trigPin, OUTPUT);  // Now using trigPin
+  pinMode(trigPin, OUTPUT);
   pinMode(echoPin, INPUT);
 }
 
 void loop() {
   long duration, inches, cm;
-
   digitalWrite(trigPin, LOW);
   delayMicroseconds(2);
   digitalWrite(trigPin, HIGH);
   delayMicroseconds(10);
   digitalWrite(trigPin, LOW);
-
   duration = pulseIn(echoPin, HIGH);
-
   inches = microsecondsToInches(duration);
   cm = microsecondsToCentimeters(duration);
-
   Serial.print(inches);
   Serial.print("in, ");
   Serial.print(cm);
   Serial.print("cm");
   Serial.println();
-
   delay(100);
 }
 
@@ -81,10 +106,15 @@ long microsecondsToInches(long microseconds) {
 long microsecondsToCentimeters(long microseconds) {
   return microseconds / 29 / 2;
 }
-------------------------------------
-Buzzer
 
-#define BUZZER 18
+    • VCC → Arduino 5V
+    • Trig → Arduino (7)
+    • Echo → Arduino (8)
+    • GND → Arduino GND
+_________________________________________________________________________
+5) Interfacing Buzzer with Arduino
+
+#define BUZZER 8
 
 void setup() {
   pinMode(BUZZER, OUTPUT);
@@ -96,14 +126,18 @@ void loop() {
   noTone(BUZZER);
   delay(1000);
 }
-------------------------------------
-Buzzer Melody
+
+      
+    • Buzzer (+) → Arduino (18)
+    • GND → Arduino GND
+
+_________________________________________________________________________
+6) Melody note with buzzer
 
 #define NOTE_C4 262
 #define NOTE_G3 196
 #define NOTE_A3 220
 #define NOTE_B3 247
-#define NOTE_C4 262
 
 int melody[] = {
   NOTE_C4, NOTE_G3, NOTE_G3, NOTE_A3, NOTE_G3, 0, NOTE_B3, NOTE_C4
@@ -124,58 +158,73 @@ void setup() {
 
 void loop() {
 }
-------------------------------------
-RGB 
 
-int redpin = 11; //select the pin for the red LED
-int bluepin =10; // select the pin for the blue LED
-int greenpin = 9;// select the pin for the green LED
+    • Buzzer (+) → Arduino (18)
+    • GND → Arduino GND
+
+_________________________________________________________________________
+7) Interfacing RGB Full Color LED with Arduino
+
+int redpin = 11;
+int bluepin = 10;
+int greenpin = 9;
 int val;
+
 void setup() {
-pinMode(redpin, OUTPUT);
-pinMode(bluepin, OUTPUT);
-pinMode(greenpin, OUTPUT);
-Serial.begin(9600);
+  pinMode(redpin, OUTPUT);
+  pinMode(bluepin, OUTPUT);
+  pinMode(greenpin, OUTPUT);
+  Serial.begin(9600);
 }
-void loop()
-{
-for(val = 255; val > 0; val--)
-{
-analogWrite(redpin, val); //set PWM value for red
-analogWrite(bluepin, 255 - val); //set PWM value for blue
-analogWrite(greenpin, 128 - val); //set PWM value for green
-Serial.println(val); //print current value
-delay(1);
+
+void loop() {
+  for(val = 255; val > 0; val--) {
+    analogWrite(redpin, val);
+    analogWrite(bluepin, 255 - val);
+    analogWrite(greenpin, 128 - val);
+    Serial.println(val);
+    delay(1);
+  }
+  for(val = 0; val < 255; val++) {
+    analogWrite(redpin, val);
+    analogWrite(bluepin, 255 - val);
+    analogWrite(greenpin, 128 - val);
+    Serial.println(val);
+    delay(1);
+  }
 }
-for(val = 0; val < 255; val++)
-{
-analogWrite(redpin, val);
-analogWrite(bluepin, 255 - val);
-analogWrite(greenpin, 128 - val);
-Serial.println(val);
-delay(1);
-}
-}
-------------------------------------
-Humidity
+
+    • Red (R) → Arduino (11)
+    • Green (G) → Arduino (9)
+    • Blue (B) → Arduino (10)
+    • GND → Arduino GND
+
+_________________________________________________________________________
+8)Temperature and Humidity Sensor
+
 #include <dht.h>
 #define DHT11_PIN 7
 dht DHT;
 
-void setup(){
-Serial.begin(9600);
+void setup() {
+  Serial.begin(9600);
 }
 
-void loop(){
-DHT.read11(DHT11_PIN);
-Serial.print("Temperature = "); 
-Serial.println(DHT.temperature);
-Serial.print("Humidity = ");
-Serial.println(DHT.humidity);
-delay(1000);
+void loop() {
+  DHT.read11(DHT11_PIN);
+  Serial.print("Temperature = ");
+  Serial.println(DHT.temperature);
+  Serial.print("Humidity = ");
+  Serial.println(DHT.humidity);
+  delay(1000);
 }
------------------------------------
-LCD
+
+    • VCC → Arduino 5V
+    • Data → Arduino (7)
+    • GND → Arduino GND
+
+_________________________________________________________________________
+9) LCD Interfacing with Arduino UNO
 
 #include <LiquidCrystal.h>
 const int rs = 12, en = 11, d4 = 5, d5 = 4, d6 = 3, d7 = 2;
@@ -192,10 +241,22 @@ void loop() {
   lcd.setCursor(0, 1);
   lcd.print("Good Morning");
 }
-------------------------------------
-7 segment
 
-void setup() {
+
+    • RS → Arduino (12)
+    • EN → Arduino (11)
+    • D4 → Arduino (5)
+    • D5 → Arduino (4)
+    • D6 → Arduino (3)
+    • D7 → Arduino (2)
+    • VCC → Arduino 5V
+    • GND → Arduino GND
+
+_________________________________________________________________________
+10) Seven segment display 
+
+void setup()
+{
   pinMode(2, OUTPUT);
   pinMode(3, OUTPUT);
   pinMode(4, OUTPUT);
@@ -203,15 +264,157 @@ void setup() {
   pinMode(6, OUTPUT);
   pinMode(7, OUTPUT);
   pinMode(8, OUTPUT);
+  pinMode(9, OUTPUT);
 }
 
-void loop() {
-  digitalWrite(2, HIGH);
+void loop()
+{
+  digitalWrite(2, LOW);
   digitalWrite(3, HIGH);
   digitalWrite(4, HIGH);
   digitalWrite(5, HIGH);
   digitalWrite(6, HIGH);
   digitalWrite(7, HIGH);
-  digitalWrite(8, LOW);
+  digitalWrite(8, HIGH);
+  digitalWrite(9, LOW);
+  delay(1000);
+
 }
----------------------------
+
+    • A → Arduino (7)
+    • B → Arduino (6)
+    • C → Arduino (3)
+    • D → Arduino (4)
+    • E → Arduino (5)
+    • F → Arduino (8)
+    • G → Arduino (9)
+    • DP → Arduino (2)
+    • com → Arduino GND
+      
+_________________________________________________________________________
+11) Interfacing Water Level Sensor with Arduino Uno
+
+#define LED_PIN 2
+#define water_sensor 7
+#define SIGNAL_PIN A5
+#define THRESHOLD 300
+
+int value = 0;
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(LED_PIN, OUTPUT);
+  pinMode(water_sensor, OUTPUT);
+  digitalWrite(water_sensor, LOW);
+  digitalWrite(LED_PIN, LOW);
+}
+
+void loop() {
+  digitalWrite(water_sensor, HIGH);
+  delay(10);
+  value = analogRead(SIGNAL_PIN);
+  digitalWrite(water_sensor, LOW);
+
+  Serial.print("The water level is : ");
+  Serial.println(value);
+
+  if (value > THRESHOLD) {
+    Serial.println("The water is detected");
+    digitalWrite(LED_PIN, HIGH);
+  } else {
+    digitalWrite(LED_PIN, LOW);
+  }
+}
+
+    • VCC → Arduino 5V
+    • Signal → Arduino (A5)
+    • LED (Indicator) → Arduino (2)
+    • GND → Arduino GND
+      
+_________________________________________________________________________
+12)Interfacing RFID With Arduino Uno
+
+#include <SPI.h>
+#include <MFRC522.h>
+
+#define RST_PIN 9
+#define SS_PIN 10
+
+MFRC522 mfrc522(SS_PIN, RST_PIN);
+
+void setup() {
+  Serial.begin(9600);
+  while (!Serial);
+  SPI.begin();
+  mfrc522.PCD_Init();
+  delay(4);
+  mfrc522.PCD_DumpVersionToSerial();
+  Serial.println(F("Scan PICC to see UID, SAK, type, and data blocks "));
+}
+
+void loop() {
+  if ( ! mfrc522.PICC_IsNewCardPresent()) {
+    return;
+  }
+  if ( ! mfrc522.PICC_ReadCardSerial()) {
+    return;
+  }
+  mfrc522.PICC_DumpToSerial(&(mfrc522.uid));
+}
+
+    • SDA → Arduino (10)
+    • SCK → Arduino (13)
+    • MOSI → Arduino (11)
+    • MISO → Arduino (12)
+    • GND → Arduino GND
+    • RST → Arduino (9)
+
+_________________________________________________________________________
+13)  Ultrasonic sensor data collection using Arduino and MYSQL
+
+const int pingPin = 7;
+const int echoPin = 8;
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, INPUT);
+}
+
+void loop() {
+  long duration, inches, cm;
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+  duration = pulseIn(echoPin, HIGH);
+  inches = microsecondsToInches(duration);
+  cm = microsecondsToCentimeters(duration);
+  Serial.print(inches);
+  Serial.print("in, ");
+  Serial.print(cm);
+  Serial.print("cm");
+  Serial.println();
+  delay(100);
+}
+
+long microsecondsToInches(long microseconds) {
+  return microseconds / 74 / 2;
+}
+
+long microsecondsToCentimeters(long microseconds) {
+  return microseconds / 29 / 2;
+}
+
+
+Code to be written in function pallet:
+
+var value = JSON.parse(JSON.stringify(msg.payload)); 
+value = msg;
+var sensor1 = msg.payload.inches; 
+var sensor2 = msg.payload.cm; 
+msg.payload = [sensor1, sensor2];
+msg.topic = 'INSERT INTO distance(inches,cm) values (?,?);
+return msg;
+
